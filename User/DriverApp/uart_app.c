@@ -339,12 +339,6 @@ void Uart2FrameOperate(void)
 						roate_st[2] = 0;
 						break;
 					
-				case 0xf901:
-					if(gUart2Frame.DataBuf[0] == 01)
-						aux_st = 1;
-					else if(gUart2Frame.DataBuf[0] == 02)
-						aux_st = 2;
-            break;
 					
         default:
             break;
@@ -623,7 +617,6 @@ void EnventHandle(void)
 	proc_envent5();
 	proc_envent6();
 	proc_envent7();
-	aux_switch();
 }
 
 //for test

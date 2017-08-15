@@ -33,70 +33,68 @@ uint8_t USB[8];
 /**********************faceplate hardkey{release/shortpush/longpush}****************************/
 void hardkey_short(uint8_t key)
 {	
-	if(key == 6)
-		CT(key,1);
-	if(once_start[key] == 1)//收到cmd使能once_start
+	if((key == 6)||(key == 15)||(key == 16)||(key == 17))
 	{
-		if(key!= 6)
 		CT(key,1);
-		if(hardkey_mod[key] == short_push)
-		{
-			tmr_start(&hardkey_tmr[key],500);
-		}
-		once_start[key] = 0;//一次cmd只启动一次tmr_start
-	}
-	
-	if(tmr_has_expired(&hardkey_tmr[key]))
-	{
-		if(key!= 6)
-		CT(key,0);
-		tmr_stop(&hardkey_tmr[key]);
 		hardkey_mod[key] = release;
 		Uart_send_feckback();
+	}
+	else
+	{
+		if(once_start[key] == 1)//收到cmd使能once_start
+		{
+				CT(key,1);
+				if(hardkey_mod[key] == short_push)
+				{
+				tmr_start(&hardkey_tmr[key],500);
+				}
+			once_start[key] = 0;//一次cmd只启动一次tmr_start
+		}
+	
+		if(tmr_has_expired(&hardkey_tmr[key]))
+		{
+			CT(key,0);
+			tmr_stop(&hardkey_tmr[key]);
+			hardkey_mod[key] = release;
+			Uart_send_feckback();
+		}
 	}
 }
 
 void hardkey_long(uint8_t key)
-{	
-	if(key == 6)
-		CT(key,0);
-	if(once_start[key] == 1)//收到cmd使能once_start
+{
+	if((key == 6)||(key == 15)||(key == 16)||(key == 17))
 	{
-		if(key!= 6)
-		CT(key,1);
-		if(hardkey_mod[key] == long_push)
-		{
-			tmr_start(&hardkey_tmr[key],2000);
-		}
-		once_start[key] = 0;//一次cmd只启动一次tmr_start
-	}
-	
-	if(tmr_has_expired(&hardkey_tmr[key]))
-	{
-		if(key!= 6)
 		CT(key,0);
-		tmr_stop(&hardkey_tmr[key]);
 		hardkey_mod[key] = release;
 		Uart_send_feckback();
+	}
+	else
+	{
+		if(once_start[key] == 1)//收到cmd使能once_start
+		{
+			CT(key,1);
+			if(hardkey_mod[key] == long_push)
+			{
+				tmr_start(&hardkey_tmr[key],2000);
+			}
+			once_start[key] = 0;//一次cmd只启动一次tmr_start
+		}
+	
+		if(tmr_has_expired(&hardkey_tmr[key]))
+		{
+			CT(key,0);
+			tmr_stop(&hardkey_tmr[key]);
+			hardkey_mod[key] = release;
+			Uart_send_feckback();
+		}
 	}
 }
 /**********************end faceplate hardkey{release/shortpush/longpush}****************************/
 
 
 /**********************AUX control****************************/
-void aux_switch(void)
-{
-	if(aux_st == 1)
-	{
-		CT(15, 1);
-		aux_st = 0;
-	}
-	else if(aux_st == 2)
-	{
-		CT(15,0);
-		aux_st = 0;
-	}
-}
+
 /**********************end combination key****************************/
 
 
