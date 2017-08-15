@@ -78,7 +78,7 @@ void keyCombination1(void)
 {
 	if(combinOnceStart[0] == 1)
 	{
-		CT(3,1);
+		CT(2,1);
 		combinTmr[0].start_tick = rt_tick;
 		combinTmr[0].state = TMR_STARTED;
 		combinOnceStart[0] = 0;
@@ -91,13 +91,13 @@ void keyCombination1(void)
 	}
 	else if((rt_tick - combinTmr[0].start_tick) > 1100)
 	{
-		CT(2,0);
+		CT(3,0);
 		CT(1,1);
 	}
 	else if((rt_tick - combinTmr[0].start_tick) > 550)
 	{
-		CT(3,0);
-		CT(2,1);
+		CT(2,0);
+		CT(3,1);
 	}
 }
 
@@ -105,7 +105,7 @@ void keyCombination2(void)
 {
 	if(combinOnceStart[0] == 1)
 	{
-		CT(3,1);
+		CT(2,1);
 		combinTmr[0].start_tick = rt_tick;
 		combinTmr[0].state = TMR_STARTED;
 		combinOnceStart[0] = 0;
@@ -118,13 +118,13 @@ void keyCombination2(void)
 	}
 	else if((rt_tick - combinTmr[0].start_tick) > 1100)
 	{
-		CT(2,0);
+		CT(3,0);
 		CT(1,1);
 	}
 	else if((rt_tick - combinTmr[0].start_tick) > 550)
 	{
-		CT(3,0);
-		CT(2,1);
+		CT(2,0);
+		CT(3,1);
 	}
 }
 /**********************end combination key****************************/
