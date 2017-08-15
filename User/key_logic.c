@@ -146,6 +146,105 @@ void power_off(uint8_t power_num)
 /**********************end NGI power1/power2****************************/
 
 
+/**********************faceplate knob ICI 2.0****************************/
+tmr_t knob_tmr01[3];
+tmr_t knob_tmr02[3];
+tmr_t knob_tmr_temp;
+rotate_mode_t knob_mode[3];
+uint8_t knob_vol[3];
+uint8_t knob_count[3];
+uint8_t knob_start[3];
+uint8_t knob_wise01[2]={0,0};
+uint8_t knob_wise02[2]={0,0};
+
+void knob_up(uint8_t knob_num, uint8_t vol)
+{
+	if(knob_start[knob_num] == 1)
+	{
+		knob_count[knob_num] =  0;
+		tmr_start(&knob_tmr01[knob_num],400);
+		tmr_start(&knob_tmr_temp,600);
+		knob_start[knob_num] = 0;
+	}
+	
+	if(tmr_has_expired(&knob_tmr01[knob_num]))
+	{
+		tmr_reset(&knob_tmr01[knob_num]);
+		knob_wise01[knob_num-1] = !knob_wise01[knob_num-1];
+		ROT(knob_num,knob_wise01[knob_num-1]);
+	}
+	
+	if(tmr_has_expired(&knob_tmr_temp))
+	{
+		tmr_start(&knob_tmr02[knob_num],400);
+		tmr_stop(&knob_tmr_temp);
+		ROT((knob_num+2),knob_wise01[knob_num-1]);
+		knob_wise02[knob_num-1] = knob_wise01[knob_num-1];
+		knob_count[knob_num]++;
+	}
+	
+	if(tmr_has_expired(&knob_tmr02[knob_num]))
+	{
+		tmr_reset(&knob_tmr02[knob_num]);
+		knob_wise02[knob_num-1] = !knob_wise02[knob_num-1];
+		ROT((knob_num+2),knob_wise02[knob_num-1]);
+		knob_count[knob_num]++;
+	}
+	
+	if(knob_count[knob_num] == vol)
+	{
+		tmr_stop(&knob_tmr01[knob_num]);
+		tmr_stop(&knob_tmr02[knob_num]);
+		knob_mode[knob_num] = stop;
+		Uart_send_feckback();
+	}
+}
+
+void knob_down(uint8_t knob_num, uint8_t vol)
+{
+	if(knob_start[knob_num] == 1)
+	{
+		knob_count[knob_num] =  0;
+		tmr_start(&knob_tmr02[knob_num],400);
+		tmr_start(&knob_tmr_temp,600);
+		knob_start[knob_num] = 0;
+	}
+	
+	if(tmr_has_expired(&knob_tmr02[knob_num]))
+	{
+		tmr_reset(&knob_tmr02[knob_num]);
+		knob_wise02[knob_num-1] = !knob_wise02[knob_num-1];
+		ROT((knob_num+2),knob_wise02[knob_num-1]);
+	}
+	
+	if(tmr_has_expired(&knob_tmr_temp))
+	{
+		tmr_start(&knob_tmr01[knob_num],400);
+		tmr_stop(&knob_tmr_temp);
+		ROT((knob_num),knob_wise02[knob_num-1]);
+		knob_wise01[knob_num-1] = knob_wise02[knob_num-1];
+		knob_count[knob_num]++;
+	}
+	
+	if(tmr_has_expired(&knob_tmr01[knob_num]))
+	{
+		tmr_reset(&knob_tmr01[knob_num]);
+		knob_wise01[knob_num-1] = !knob_wise01[knob_num-1];
+		ROT(knob_num,knob_wise01[knob_num-1]);
+		knob_count[knob_num]++;
+	}
+	
+	if(knob_count[knob_num] == vol)
+	{
+		tmr_stop(&knob_tmr01[knob_num]);
+		tmr_stop(&knob_tmr02[knob_num]);
+		knob_mode[knob_num] = stop;
+		Uart_send_feckback();
+	}
+}
+/**********************end faceplate knob ICI 2.0****************************/
+
+
 /**********************faceplate rotate turn step****************************/
 void rotate_up(uint8_t rotate_num,uint8_t step)
 {

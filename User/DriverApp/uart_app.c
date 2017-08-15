@@ -276,26 +276,27 @@ void Uart2FrameOperate(void)
 						pwr_mod[2] = 2;
             break;
 					
+				//knob_ICI2_01
 				case 0xf301:
-					if((rotate_mode[1] == 0)&&(gUart2Frame.DataBuf[0]<3)&&(gUart2Frame.DataBuf[1]<0x7f))
+					if((knob_mode[1] == 0)&&(gUart2Frame.DataBuf[0]<3)&&(gUart2Frame.DataBuf[1]<0x7f))
 					{
-						rotate_mode[1] = gUart2Frame.DataBuf[0];
-						rotate_step[1] = gUart2Frame.DataBuf[1];
-						roate_st[1] = 1;
+						knob_mode[1] = gUart2Frame.DataBuf[0];
+						knob_vol[1] = gUart2Frame.DataBuf[1];
+						knob_start[1] = 1;
 					}
 					else
-						roate_st[1] = 0;
+						knob_start[1] = 0;
 						break;
-					
+				//knob_ICI2_02	
 				case 0xf302:
-					if((rotate_mode[2] == 0)&&(gUart2Frame.DataBuf[0]<3)&&(gUart2Frame.DataBuf[1]<0x7f))
+					if((knob_mode[2] == 0)&&(gUart2Frame.DataBuf[0]<3)&&(gUart2Frame.DataBuf[1]<0x7f))
 					{
-						rotate_mode[2] = gUart2Frame.DataBuf[0];
-						rotate_step[2] = gUart2Frame.DataBuf[1];
-						roate_st[2] = 1;
+						knob_mode[2] = gUart2Frame.DataBuf[0];
+						knob_vol[2] = gUart2Frame.DataBuf[1];
+						knob_start[2] = 1;
 					}
 					else
-						roate_st[2] = 0;
+						knob_start[2] = 0;
 						break;
 								
 				case 0xf401:
@@ -338,6 +339,29 @@ void Uart2FrameOperate(void)
 					}
 					break;
 				
+				//knob_NGI1_01
+				case 0xf801:
+					if((rotate_mode[1] == 0)&&(gUart2Frame.DataBuf[0]<3)&&(gUart2Frame.DataBuf[1]<0x7f))
+					{
+						rotate_mode[1] = gUart2Frame.DataBuf[0];
+						rotate_step[1] = gUart2Frame.DataBuf[1];
+						roate_st[1] = 1;
+					}
+					else
+						roate_st[1] = 0;
+						break;
+				//knob_NGI1_02
+				case 0xf802:
+					if((rotate_mode[2] == 0)&&(gUart2Frame.DataBuf[0]<3)&&(gUart2Frame.DataBuf[1]<0x7f))
+					{
+						rotate_mode[2] = gUart2Frame.DataBuf[0];
+						rotate_step[2] = gUart2Frame.DataBuf[1];
+						roate_st[2] = 1;
+					}
+					else
+						roate_st[2] = 0;
+						break;
+					
 				case 0xf901://for test
 					if(test002 == 0)
 					test001 = 1;
@@ -399,7 +423,8 @@ void proc_envent2(void)
 		power_off(2);
 }
 
-void proc_envent3(void)
+//knob_envent_NGI1
+void knob_envent_NGI1(void)
 {
 	if(rotate_mode[1]==clockwise)
 			rotate_up(1,rotate_step[1]);
@@ -410,6 +435,20 @@ void proc_envent3(void)
 			rotate_up(2,rotate_step[2]);
 	else if(rotate_mode[2]==anticlockwise)
 			rotate_down(2,rotate_step[2]);
+}
+
+//knob_envent_ICI2
+void knob_envent_ICI2(void)
+{
+	if(knob_mode[1]==clockwise)
+			knob_up(1,knob_vol[1]);
+	else if(knob_mode[1]==anticlockwise)
+			knob_down(1,knob_vol[1]);
+	
+	if(knob_mode[2]==clockwise)
+			knob_up(2,knob_vol[2]);
+	else if(knob_mode[2]==anticlockwise)
+			knob_down(2,knob_vol[2]);
 }
 
 void proc_envent4(void)
@@ -507,10 +546,11 @@ void EnventHandle(void)
 {
 	proc_envent1();
 	proc_envent2();
-	proc_envent3();
+	knob_envent_ICI2();
+	knob_envent_NGI1();
 	proc_envent4();
 	proc_envent5();
 	proc_envent6();
-	test01();//for test
+//	test01();//for test
 }
 

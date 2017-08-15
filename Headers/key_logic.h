@@ -58,6 +58,8 @@ extern void SW_J_off(uint8_t SWJ_num);
 extern void Uart_send_feckback(void);
 extern void keyCombination1(void);
 extern void keyCombination2(void);
+extern void knob_up(uint8_t knob_num, uint8_t vol);
+extern void knob_down(uint8_t knob_num, uint8_t vol);
 
 extern tmr_t hardkey_tmr[19];
 extern mode_state_t hardkey_mod[19];
@@ -73,5 +75,8 @@ extern uint8_t J[5];
 extern tmr_t combinTmr[2];
 extern uint8_t combinStatus[2];
 extern uint8_t combinOnceStart[3];
+extern rotate_mode_t knob_mode[3];
+extern uint8_t knob_vol[3];
+extern uint8_t knob_start[3];
 
 #endif
