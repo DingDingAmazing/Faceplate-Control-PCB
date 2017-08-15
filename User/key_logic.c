@@ -83,21 +83,29 @@ void keyCombination1(void)
 		combinTmr[0].state = TMR_STARTED;
 		combinOnceStart[0] = 0;
 	}
-	if((rt_tick - combinTmr[0].start_tick) > 7100)
+	if((rt_tick - combinTmr[0].start_tick) > 6500)
 	{
 		CT(1,0);
 		combinStatus[0] = 0;//process finish
 		Uart_send_feckback();
 	}
-	else if((rt_tick - combinTmr[0].start_tick) > 1100)
+		else if((rt_tick - combinTmr[0].start_tick) > 1500)
+	{
+		CT(1,1);
+	}
+	else if((rt_tick - combinTmr[0].start_tick) > 1300)
 	{
 		CT(3,0);
-		CT(1,1);
+//		CT(1,1);
+	}
+	else if((rt_tick - combinTmr[0].start_tick) > 750)
+	{
+		CT(3,1);
 	}
 	else if((rt_tick - combinTmr[0].start_tick) > 550)
 	{
 		CT(2,0);
-		CT(3,1);
+//		CT(3,1);
 	}
 }
 
@@ -116,15 +124,23 @@ void keyCombination2(void)
 		combinStatus[1] = 0;//process finish
 		Uart_send_feckback();
 	}
-	else if((rt_tick - combinTmr[0].start_tick) > 1100)
+		else if((rt_tick - combinTmr[0].start_tick) > 1500)
+	{
+		CT(1,1);
+	}
+	else if((rt_tick - combinTmr[0].start_tick) > 1300)
 	{
 		CT(3,0);
-		CT(1,1);
+//		CT(1,1);
+	}
+	else if((rt_tick - combinTmr[0].start_tick) > 750)
+	{
+		CT(3,1);
 	}
 	else if((rt_tick - combinTmr[0].start_tick) > 550)
 	{
 		CT(2,0);
-		CT(3,1);
+//		CT(3,1);
 	}
 }
 /**********************end combination key****************************/
