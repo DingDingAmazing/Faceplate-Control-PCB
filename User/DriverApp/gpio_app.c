@@ -143,16 +143,25 @@ void J_J(uint8_t num, uint8_t en)
 	{
 		case 1:
 			if(en)
+			{
 				key_set(J1, 1);
+				key_set(J2, 1);//changed at 6/30/2017
+			}
 			else
+			{
 				key_set(J1, 0);
+				key_set(J2, 0);//changed at 6/30/2017
+			}
 			break;
-			
+
+//changed at 6/30/2017			
 		case 2:
+		{
 			if(en)
 				key_set(J2, 1);
 			else
 				key_set(J2, 0);
+		}
 			break;
 			
 		case 3:
